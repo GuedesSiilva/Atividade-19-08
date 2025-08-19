@@ -28,6 +28,9 @@ function validarCPF(cpf)
 {
     return /^\d{11}$/.test(cpf);
 }
+function validarEndereco(rua, numero) {
+    return rua && numero && typeof rua === 'string' && typeof numero === 'number';
+}
 app.post('/alunos', (req, res) => {
     const {nome, cpf, cep, uf, rua, numero} = req.body;
 
@@ -42,6 +45,9 @@ app.post('/alunos', (req, res) => {
     }
     if (alunos.some(a => a.cpf === cpf)) {
         return res.status(409).json({ error: 'CPF duplicado.' });
+    }
+    if (!validarEndereco(rua, numero)) {
+        return res.status(400).json({ error: 'Endereço inválido.' });
     }
     const novoAluno = {
         id: alunos.length + 1,
