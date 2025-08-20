@@ -76,6 +76,18 @@ app.put('/alunos/:id', (req, res) => {
     if (!nome || !cpf || !cep || !uf || !rua || !numero) {
         return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
     }
+    if (!validarCPF(cpf)) {
+        return res.status(400).json({ error: 'CPF inválido.' });
+    }
+    if (!validarCEP(cep)) {
+        return res.status(400).json({ error: 'CEP inválido.' });
+    }
+    if (alunos.some(a => a.cpf === cpf)) {
+        return res.status(409).json({ error: 'CPF duplicado.' });
+    }
+    if (!validarEndereco(rua, numero)) {
+        return res.status(400).json({ error: 'Endereço inválido.' });
+    }
     alunos[alunoIndex] = {
         id,
         nome,
