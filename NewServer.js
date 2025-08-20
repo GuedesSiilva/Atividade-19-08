@@ -69,7 +69,7 @@ app.post('/alunos', (req, res) => {
 app.put('/alunos/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const {nome, cpf, cep, uf, rua, numero} = req.body;
-    const alunoIndex = alunos.find(a => a.id === id);
+    const alunoIndex = alunos.findIndex(a => a.id === id);
     if (alunoIndex === -1) {
         return res.status(404).json({ error: 'Aluno não encontrado.' });
     }
